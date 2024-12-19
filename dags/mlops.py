@@ -12,6 +12,7 @@ from utilization.cleaning_data import CleaningData
 from utilization.feature_engineering import FeatureEngineering
 from utilization.fetch_from_postgresql import FetchFromPostgresql
 from utilization.modeling import Modeling
+from utilization.choose_best_model import ChooseBestModel
 
 default_args= {
     'owner': 'GGGaming',
@@ -69,4 +70,11 @@ with DAG(
         python_callable=Modeling,
         execution_timeout=timedelta(minutes=20)
     )
-    scraping_link >> scraping_data >> update_table_db >> fetch_data >> cleaning_data >> feature_engineering >> modeling
+
+    # task: 8
+    choose_best_model = PythonOperator(
+        task_id='choose_best_model',
+        python_callable=ChooseBestModel
+    )
+
+    scraping_link >> scraping_data >> update_table_db >> fetch_data >> cleaning_data >> feature_engineering >> modeling >> choose_best_model

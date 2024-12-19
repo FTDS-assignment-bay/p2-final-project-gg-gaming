@@ -12,3 +12,6 @@ def FetchFromPostgresql():
 
     # Save to a CSV file
     df.to_csv('/opt/airflow/data/data_cleaned.csv', index=False)
+
+if __name__ == "__main__":
+    FetchFromPostgresql()
